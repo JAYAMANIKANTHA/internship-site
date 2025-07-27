@@ -1,3 +1,4 @@
 opencv-python
 telepot
 requests
+gunicorn
